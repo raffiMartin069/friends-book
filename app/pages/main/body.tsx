@@ -1,10 +1,13 @@
 import { View, Text, StyleSheet, Image } from "react-native";
-import React from "react";
-import { root_style } from "@/styles/style";
 import { Link } from "expo-router";
+import React from "react";
 
 function profileNavigator(name: string) {
   let path: string = "";
+
+  if (name === null || name === "" || name === undefined) {
+    throw new Error("Something went wrong!");
+  }
 
   if (name === "Rodnie A. Caracena") {
     path = "/pages/rodnie";
@@ -29,7 +32,7 @@ function profileNavigator(name: string) {
   return path;
 }
 
-export default function ProfilePage() {
+export default function Body() {
   const person = [
     "Rodnie A. Caracena",
     "Raphael H. Bellosillo",
@@ -37,67 +40,48 @@ export default function ProfilePage() {
     "Adrianne Villarta",
     "Aaron (Adams) Pinote",
   ];
-
   const imagePath = [
     require("@/assets/images/src/rodnie_pp.jpg"),
     require("@/assets/images/src/raph_pp.jpg"),
     require("@/assets/images/src/lj.jpg"),
-    require("@/assets/images/src/drianne_1.jpg"),
+    require("@/assets/images/src/drianne_2.jpg"),
     require("@/assets/images/src/aaron.jpg"),
   ];
-
   return (
-    <View style={[root_style.container]}>
-      <View
-        style={[
-          {
-            width: "100%",
-            height: 100,
-            backgroundColor: "#0866ff",
-            justifyContent: "center",
-            padding: 10,
-          },
-        ]}
-      >
-        <Text style={{ fontSize: 32, fontWeight: "bold", color: "white" }}>
-          FriendsBook
-        </Text>
-        <Text style={{ fontSize: 16, fontWeight: "bold", color: "white" }}>
-          Scan through you friend list!
-        </Text>
-      </View>
-      <View style={[profile_style.local_container]}>
-        {person.map((person, idx) => {
-          console.log(person);
-          let path = profileNavigator(person);
-          return (
-            <View style={[profile_style.text_container]} key={idx}>
+    <View style={[profile_style.local_container]}>
+      {person.map((person, idx) => {
+        let path = null;
+        try {
+          path = profileNavigator(person);
+        } catch (e) {
+          console.error(e);
+        }
+        return (
+          <View style={[profile_style.text_container]} key={idx}>
+            <Link href={path as any}>
               <View style={[profile_style.row]}>
                 <Image
                   source={imagePath[idx]}
-                  style={{ width: 50, height: 50 }}
+                  style={{ width: 100, height: 100, borderRadius: 125 }}
                 />
-
-                <Link href={path as any}>
-                  <Text style={profile_style.text}>{person}</Text>
-                </Link>
+                <Text style={profile_style.text}>{person}</Text>
               </View>
-            </View>
-          );
-        })}
-      </View>
+            </Link>
+          </View>
+        );
+      })}
     </View>
   );
 }
 
 const profile_style = StyleSheet.create({
   text_container: {
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: 15,
+    marginBottom: 15,
   },
   text: {
     fontSize: 20,
-    textDecorationLine: "underline",
+    textDecorationLine: "none",
     color: "blue",
     marginLeft: 10,
   },
@@ -109,7 +93,7 @@ const profile_style = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    gap: 10,
+    gap: 20,
     alignItems: "center",
   },
 });
