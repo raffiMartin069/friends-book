@@ -1,5 +1,6 @@
-import { View, Text, StyleSheet, Image } from "react-native";
-import { Link } from "expo-router";
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import { useRouter } from "expo-router";
+import { onClickToast } from "@/util/toast";
 import React from "react";
 
 function profileNavigator(name: string) {
@@ -33,6 +34,8 @@ function profileNavigator(name: string) {
 }
 
 export default function Body() {
+  const router = useRouter();
+
   const person = [
     "Rodnie A. Caracena",
     "Raphael H. Bellosillo",
@@ -47,6 +50,7 @@ export default function Body() {
     require("@/assets/images/src/drianne_2.jpg"),
     require("@/assets/images/src/aaron.jpg"),
   ];
+
   return (
     <View style={[profile_style.local_container]}>
       {person.map((person, idx) => {
@@ -57,22 +61,25 @@ export default function Body() {
           console.error(e);
         }
         return (
-          <View style={[profile_style.text_container]} key={idx}>
-            <Link href={path as any}>
-              <View style={[profile_style.row]}>
-                <Image
-                  source={imagePath[idx]}
-                  style={{ width: 100, height: 100, borderRadius: 125 }}
-                />
-                <Text style={profile_style.text}>{person}</Text>
-              </View>
-            </Link>
-          </View>
+          <TouchableOpacity
+            style={[profile_style.text_container]}
+            key={idx}
+            onPress={() => onClickToast(path as any, person, router)}
+          >
+            <View style={[profile_style.row]}>
+              <Image
+                source={imagePath[idx]}
+                style={{ width: 100, height: 100, borderRadius: 125 }}
+              />
+              <Text style={profile_style.text}>{person}</Text>
+            </View>
+          </TouchableOpacity>
         );
       })}
     </View>
   );
 }
+
 
 const profile_style = StyleSheet.create({
   text_container: {
