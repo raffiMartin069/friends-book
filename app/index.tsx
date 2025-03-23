@@ -1,12 +1,12 @@
+import { SafeAreaView } from "react-native-safe-area-context";
 import { root_style } from "@/styles/style";
-import { View } from "react-native";
 
 import ProfilePage from "./pages/main/profile_page";
 
 export default function Index() {
   return (
-    <View style={[root_style.container]}>
+    <SafeAreaView style={[root_style.container]}>
       <ProfilePage />
-    </View>
+    </SafeAreaView>
   );
 }
